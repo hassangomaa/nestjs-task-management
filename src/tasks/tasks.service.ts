@@ -7,11 +7,19 @@ import { CreateTaskDto } from './dot/create-task.dto';
 export class TasksService {
     private tasks: Task[] = [];
 
-    getAllTasks() {
+    getAllTasks() : Task[] { //return type is Task[]
         return this.tasks;
     }
 
-    createTask(CreateTaskDto: CreateTaskDto): Task {
+    getTaskById(id: string): Task {
+      //find() method returns the value of the first element in the provided 
+      //array that satisfies the provided testing function.
+        return this.tasks.find(task => task.id === id);
+        // its like a for each loop
+    }
+
+    createTask(CreateTaskDto: CreateTaskDto): Task {//return type is Task
+
         const  {title , description} = CreateTaskDto;//destructuring 
         //- same as->>> const title = CreateTaskDto.title; const description = CreateTaskDto.description;
         // same as->>> variable = object.property
