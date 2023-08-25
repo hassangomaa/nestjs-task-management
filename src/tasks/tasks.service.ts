@@ -32,4 +32,20 @@ export class TasksService {
         this.tasks.push(task);
         return task; 
     }
+
+    deleteTaskById(id: string): void
+    //  Task  | undefined 
+     {
+        this.tasks = this.tasks.filter(task => task.id !== id);
+
+        // const index = this.tasks.findIndex(task => task.id === id);
+        
+        // if (index !== -1) {
+        //     const deletedTask = this.tasks.splice(index, 1)[0];
+        //     return deletedTask;
+        // }
+        
+        // return undefined; // Task not found
+    }
+
 }
