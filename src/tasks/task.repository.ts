@@ -32,12 +32,12 @@ export class TaskRepository extends Repository<Task> {
     if (search) {
       query.andWhere(
         '(task.title LIKE :search OR task.description LIKE :search)', //search is a parameter
-        { search: `%${search}%` },
+        { search: `%${search}%` },//like is a sql operator - same as c++ variable passing
       );
     }
     const tasks = await query.getMany();
     return tasks;
   }
 
-  
+
 }

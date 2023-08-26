@@ -49,12 +49,13 @@ export class TasksService {
       }
 
       async getTasksWithFilters(filterDto: GetTasksFilterDto)
-      : Promise<Task[]> 
+      : Promise<Task[]> //array of tasks
       {
         return this.taskRepository.getTasksWithFilters(filterDto);
       }
 
-      async getAllTasks(): Promise<Task[]> {
+      async getAllTasks(): Promise<Task[]> {//return type is Task[]
+        
         return this.taskRepository.find();//find() method returns all the tasks
       }
 
