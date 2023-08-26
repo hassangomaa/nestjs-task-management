@@ -11,9 +11,9 @@ export class TasksController {
     constructor(private tasksService: TasksService) {}
     
     @Get()
-    @UsePipes(ValidationPipe)
+    // @UsePipes(ValidationPipe)// this is a pipe decorator
     getTasks(
-        @Query() //its a Query decorator --> /tasks?search=aa&status=vvv&test=www
+        @Query(ValidationPipe) //its a Query decorator --> /tasks?search=aa&status=vvv&test=www
         filterDto : GetTasksFilterDto): Task[] {
         console.log(filterDto);
         if(Object.keys(filterDto).length) {
