@@ -1,8 +1,8 @@
-import { BaseEntity, Column, PrimaryGeneratedColumn } from "typeorm";
-import { TaskStatus } from "./task.model";
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { TaskStatus } from "./task-status.enum"; 
 
-
-export class Task extends BaseEntity{
+@Entity()
+export class Task  {
     @PrimaryGeneratedColumn()
     id: number;
 
