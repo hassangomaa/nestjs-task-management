@@ -25,7 +25,7 @@ export class TasksController {
     //     return this.tasksService.getAllTasks();
     //     }
     // }
-    
+
     @Get(':id')
     async getTaskById(@Param('id', ParseIntPipe) id: number): Promise<Task> {
       try {
@@ -40,15 +40,15 @@ export class TasksController {
     }
 
 
-    // @Post()
-    // @UsePipes(ValidationPipe)
-    // createTask(
-    //     @Body() CreateTaskDto: CreateTaskDto,
-    //     ): Task {
+    @Post()
+    @UsePipes(ValidationPipe)
+    createTask(
+        @Body() CreateTaskDto: CreateTaskDto,
+        ): Promise<Task> {
 
-    //     return this.tasksService.createTask(CreateTaskDto);
+        return this.tasksService.createTask(CreateTaskDto);
     
-    // }
+    }
 
     // @Delete(':id')
     // deleteTaskById(@Param('id') id : string ) :

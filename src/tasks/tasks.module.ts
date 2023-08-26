@@ -3,16 +3,20 @@ import { TasksController } from './tasks.controller';
 import { TasksService } from './tasks.service';
 import { TaskRepository } from './task.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { Task } from './task.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([TaskRepository]),  //array of repositories that we want to inject
+    TypeOrmModule.forFeature([Task]),  //array of repositories that we want to inject
+    
   ],
   controllers: [
     TasksController
   ],
   providers: [
-    TasksService
+    TasksService,
+    TaskRepository
+
   ],
 })
 export class TasksModule {}

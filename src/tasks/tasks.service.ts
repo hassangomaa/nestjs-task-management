@@ -25,13 +25,31 @@ export class TasksService {
         return task;
       }
     
-    
+  
+    //   async createTask(createTaskDto: CreateTaskDto): Promise<Task> {
+    //     const { title, description } = createTaskDto;
+    //     const task = new Task(); // Create a new instance of Task
+    //     task.title = title;
+    //     task.description = description;
+    //     task.status = TaskStatus.OPEN; // Set the status
+      
+    //     return await  this.taskRepository.save(task); // Save the task
+    //     // return await task.save(); // Save the created task to the database
+  
+    // }
+      
+    createTask(createTaskDto: CreateTaskDto): Promise<Task> {
+        return this.taskRepository.createTask(createTaskDto);
+      }
 
     // private tasks: Task[] = [];
 
     // getAllTasks() : Task[] { //return type is Task[]
     //     return this.tasks;
     // }
+
+
+
     // getTaskById(id: string): any{
     //   //find() method returns the value of the first element in the provided 
     //   //array that satisfies the provided testing function.
