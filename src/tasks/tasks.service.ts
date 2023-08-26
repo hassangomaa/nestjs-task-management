@@ -48,4 +48,10 @@ export class TasksService {
         // return undefined; // Task not found
     }
 
+    updateTaskByStatus(id: string, status: Task['status']): Task {
+        const task = this.getTaskById(id);
+        task.status = status;
+        return task;
+    }
+
 }
