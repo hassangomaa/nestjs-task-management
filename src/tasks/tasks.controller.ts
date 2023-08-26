@@ -13,18 +13,18 @@ export class TasksController {
     
     constructor(private tasksService: TasksService) {}
     
-    // @Get()
-    // // @UsePipes(ValidationPipe)// this is a pipe decorator
-    // getTasks(
-    //     @Query(ValidationPipe) //its a Query decorator --> /tasks?search=aa&status=vvv&test=www
-    //     filterDto : GetTasksFilterDto): Task[] {
-    //     console.log(filterDto);
-    //     if(Object.keys(filterDto).length) {
-    //         return this.tasksService.getTasksWithFilters(filterDto);
-    //     } else {
-    //     return this.tasksService.getAllTasks();
-    //     }
-    // }
+    @Get()
+    // @UsePipes(ValidationPipe)// this is a pipe decorator
+    getTasks(
+        @Query(ValidationPipe) //its a Query decorator --> /tasks?search=aa&status=vvv&test=www
+        filterDto : GetTasksFilterDto): Promise<Task[]> {
+        console.log(filterDto);
+        if(Object.keys(filterDto).length) {
+            return this.tasksService.getTasksWithFilters(filterDto);
+        } else {
+        return this.tasksService.getAllTasks();
+        }
+    }
 
     @Get(':id')
     async getTaskById(@Param('id', ParseIntPipe) id: number): Promise<Task> {
@@ -50,22 +50,22 @@ export class TasksController {
     
     }
 
-    // @Delete(':id')
-    // deleteTaskById(@Param('id') id : string ) :
+    @Delete(':id')
+    deleteTaskById(@Param('id') id : number ) : Promise<void>
     // void
-    // // Task
-    //  {
-    //     return this.tasksService.deleteTaskById(id);
-    //     //delete task reurn 200 ok even if task is not found !!!!!!!!!!1
-    // }
+    // Task
+     {
+        return this.tasksService.deleteTaskById(id);
+        //delete task reurn 200 ok even if task is not found !!!!!!!!!!1
+    }
 
-    // @Put(':id/status')
-    // updateTaskByStatus( 
-    //     @Param('id') id : string,//its a Param decorator --> send in the url
-    //     @Body('status', TaskStatusValidationPipe ) status : Task['status']//its a Body decorator --> send in the body
-    //     ) : Task {
-    //         return this.tasksService.updateTaskByStatus(id, status);
-    // }
+    @Put(':id/status')
+    updateTaskByStatus( 
+        @Param('id') id : number,//its a Param decorator --> send in the url
+        @Body('status', TaskStatusValidationPipe ) status : Task['status']//its a Body decorator --> send in the body
+        ) : Promise<Task> {
+            return this.tasksService.updateTaskStatus(id, status);
+    }
    
 
 

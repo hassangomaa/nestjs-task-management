@@ -25,7 +25,41 @@ export class TasksService {
         return task;
       }
     
-  
+
+      
+    createTask(createTaskDto: CreateTaskDto): Promise<Task> {
+        return this.taskRepository.createTask(createTaskDto);
+      }
+
+
+      async deleteTaskById(id: number): Promise<void> {
+        const result = await this.taskRepository.delete({ id });
+        if (result.affected === 0) { //affected is a property of result so 0 means no task deleted
+          throw new NotFoundException(`Task with ID ${id} not found`);
+        }
+        console.log(result);
+      }
+
+
+      async updateTaskStatus(id: number, status: TaskStatus): Promise<Task> {
+        const task = await this.getTaskById(id);
+        task.status = status;
+        await this.taskRepository.save(task);
+        return task;
+      }
+
+      async getTasksWithFilters(filterDto: GetTasksFilterDto)
+      : Promise<Task[]> 
+      {
+        return this.taskRepository.getTasksWithFilters(filterDto);
+      }
+
+      async getAllTasks(): Promise<Task[]> {
+        return this.taskRepository.find();//find() method returns all the tasks
+      }
+
+
+
     //   async createTask(createTaskDto: CreateTaskDto): Promise<Task> {
     //     const { title, description } = createTaskDto;
     //     const task = new Task(); // Create a new instance of Task
@@ -37,10 +71,7 @@ export class TasksService {
     //     // return await task.save(); // Save the created task to the database
   
     // }
-      
-    createTask(createTaskDto: CreateTaskDto): Promise<Task> {
-        return this.taskRepository.createTask(createTaskDto);
-      }
+
 
     // private tasks: Task[] = [];
 
