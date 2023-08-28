@@ -21,4 +21,16 @@ export class AuthController {
         );
     }
 
+    @Post('/signin')
+    signIn(
+        @Body() authCredentialsDto : AuthCredentialsDto //cast Body to AuthCredentialsDto
+    )
+    : Promise<string> 
+    {
+        // console.log('authCredentialsDto', authCredentialsDto);
+        return this.authService.signIn(
+            authCredentialsDto 
+        );
+    }
+
 }

@@ -1,18 +1,31 @@
-import { EntityRepository, Repository } from "typeorm";
+import { DataSource, EntityRepository, Repository } from "typeorm";
 import { User } from "./user.entity";
 import { AuthCredentialsDto } from "./dto/auth-credentials.dto";
-
+import * as bcrypt from 'bcrypt';
 
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
 
-    // constructor(
-    //     private datssource: DataSource,
-    // ) {
-    //     super( User, datssource.createEntityManager()
-    //     );
-    // }
+    constructor(
+        private datssource: DataSource,
+    ) {
+        super( User, datssource.createEntityManager()
+        );
+    }
+
+    //validate password
+    async validateUserPassword(authCredentialsDto: AuthCredentialsDto): Promise<string>{
+        const { username, password } = authCredentialsDto;
+        const user = await this.findOne({ where: { username } });
+        //        const task = await this.taskRepository.findOne({ where: { id } });    //solved by calling where method
+
+        if(user && await user.validatePassword(password)){
+            return user.username;
+        }else{
+            return null;
+        }
+    }
 
 
     //gonna create user
@@ -21,10 +34,20 @@ export class UserRepository extends Repository<User> {
         const { username, password } = authCredentialsDto;//destructuring!
         const user = new User();
         user.username = username;
-        user.password = password;
-        await user.save();
+        user.salt = await bcrypt.genSalt();//takes time to generate salt
+        console.log('salt', user.salt.toString());
+        //hashing password
+        user.password =  bcrypt.hashSync(password, user.salt);//await user.hashPassword(password, user.salt);
 
-        // const user = this.create({ username, password });
-        // await this.save(user);
+        try {       
+                await user.save();
+            } catch (error) {
+                console.log('error', error.code);// easy to handle error
+                if(error.code === '23505'){
+                    throw new Error('Username already exists');
+                }else{
+                    throw new Error('Something went wrong');
+                } 
+            }
     }
 }

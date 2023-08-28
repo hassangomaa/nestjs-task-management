@@ -26,6 +26,9 @@ export class TaskRepository extends Repository<Task> {
   async getTasksWithFilters(filterDto: GetTasksFilterDto): Promise<Task[]> {
     const { status, search } = filterDto;
     const query = this.createQueryBuilder('task'); //task is an alias for the Task entity
+    // By using parameterized queries in the queryBuilder.andWhere() methods, you ensure 
+    // that user input is properly escaped and sanitized, reducing the risk of SQL injection.
+
     if (status) {
       query.andWhere('task.status = :status', { status }); //status is a parameter
     }
@@ -35,7 +38,7 @@ export class TaskRepository extends Repository<Task> {
         { search: `%${search}%` },//like is a sql operator - same as c++ variable passing
       );
     }
-    const tasks = await query.getMany();
+    const tasks = await query.getMany();//return all the tasks
     return tasks;
   }
 
