@@ -25,7 +25,7 @@ export class AuthController {
     signIn(
         @Body() authCredentialsDto : AuthCredentialsDto //cast Body to AuthCredentialsDto
     )
-    : Promise<string> 
+    : Promise<{accessToken: string}>
     {
         // console.log('authCredentialsDto', authCredentialsDto);
         return this.authService.signIn(
