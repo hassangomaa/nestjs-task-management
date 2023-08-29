@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, ParseIntPipe, Post, Put, Query, Req, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Logger, NotFoundException, Param, ParseIntPipe, Post, Put, Query, Req, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 // import { Task } from './task.model';
 import { CreateTaskDto } from './dot/create-task.dto';
@@ -14,6 +14,7 @@ import { GetUser } from 'src/auth/get-user.decorator';
 @UseGuards(AuthGuard())
 export class TasksController {
 
+    private logger = new Logger('TasksController');
     
     constructor(private tasksService: TasksService) {}
     
@@ -21,11 +22,16 @@ export class TasksController {
     // @UsePipes(ValidationPipe)// this is a pipe decorator
     getTasks(
         @Query(ValidationPipe) //its a Query decorator --> /tasks?search=aa&status=vvv&test=www
-        filterDto : GetTasksFilterDto): Promise<Task[]> {
+        filterDto : GetTasksFilterDto,
+        @Req() req
+        ): Promise<Task[]> {
         console.log(filterDto);
         if(Object.keys(filterDto).length) {
             return this.tasksService.getTasksWithFilters(filterDto);
         } else {
+        const user = req.user;
+          this.logger.verbose(`User ${user.username} 
+              retrieving all tasks. Filters: ${JSON.stringify(filterDto)}`);
         return this.tasksService.getAllTasks();
         }
     }
