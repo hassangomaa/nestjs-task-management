@@ -7,6 +7,10 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './jwt.strategy';
 
+
+//import config module
+import * as config from 'config';//import config module
+const jwtConfig = config.get('jwt');//get the jwt config from config/default.json
 @Module({
   imports: [
     //passport module
@@ -14,7 +18,8 @@ import { JwtStrategy } from './jwt.strategy';
 
     //jwt module
      JwtModule.register ({ //register is a static method of JwtModule class which takes an object as argument
-      secret  :"topsecret5",//secret key -needs be more complex in real world
+      // secret  :"topsecret5",//secret key -needs be more complex in real world
+      secret: process.env.JWT_SECRET || jwtConfig.secret,//get the secret key from config/default.json
       signOptions: {
         expiresIn: 3600,//1 hour - after 1 hour token will expire
       },
